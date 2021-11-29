@@ -13,6 +13,8 @@ develop-eggs/
 dist/
 downloads/
 eggs/
+.pytest_cache/
+.idea/
 .eggs/
 lib/
 lib64/
