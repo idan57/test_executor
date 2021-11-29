@@ -1,10 +1,10 @@
 import os
 from typing import Callable
 
-from abstract_test.abstract_test import AbstractTest
-from abstract_test.test_result import TestResult
-from common import DEFAULT_LOGS_FOLDER
-from logger_factory.logger_factory import LoggerFactory
+from test_executor.abstract_test.abstract_test import AbstractTest
+from test_executor.abstract_test.test_result import TestResult
+from test_executor.common import DEFAULT_LOGS_FOLDER
+from test_executor.logger_factory.logger_factory import LoggerFactory
 import traceback
 
 

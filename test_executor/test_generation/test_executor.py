@@ -2,9 +2,9 @@ import os
 import threading
 from typing import List
 
-from common import DEFAULT_LOGS_FOLDER
-from logger_factory.logger_factory import LoggerFactory
-from test_generation.test_runnable import TestRunnable
+from test_executor.common import DEFAULT_LOGS_FOLDER
+from test_executor.logger_factory.logger_factory import LoggerFactory
+from test_executor.test_generation.test_runnable import TestRunnable
 
 
 class TestExecutor(object):

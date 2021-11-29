@@ -1,13 +1,11 @@
 import logging
-import os
 from abc import ABC, abstractmethod
 from inspect import getmembers, ismethod
 
-from typing import Callable, List
+from typing import List
 
-from abstract_test.test_result import TestResult, TestVerdict
-from common import DEFAULT_LOGS_FOLDER
-from logger_factory.logger_factory import LoggerFactory
+from test_executor.abstract_test.test_result import TestResult, TestVerdict
+from test_executor.common import DEFAULT_LOGS_FOLDER
 
 
 class AbstractTest(ABC):
