@@ -21,7 +21,7 @@ class LoggerFactory(object):
         fh = logging.FileHandler(log_path)
         fh.setLevel(logging.DEBUG)
         ch = logging.StreamHandler()
-        ch.setLevel(logging.ERROR)
+        ch.setLevel(logging.INFO)
 
         logging_format = LoggerFactory._get_format(config)
 
