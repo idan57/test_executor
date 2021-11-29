@@ -1,6 +1,6 @@
 import time
 
-from abstract_test.abstract_test import AbstractTest
+from test_executor.abstract_test.abstract_test import AbstractTest
 
 
 class MockTest3(AbstractTest):

@@ -1,7 +1,7 @@
 import os
 
-from test_generation.test_executor import TestExecutor
-from test_generation.test_loader import TestLoader
+from test_executor.test_generation.test_executor import TestExecutor
+from test_executor.test_generation.test_loader import TestLoader
 
 
 def test_e2e_testing():
