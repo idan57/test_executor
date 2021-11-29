@@ -3,8 +3,8 @@ import pkgutil
 
 from typing import List
 
-from abstract_test.abstract_test import AbstractTest
-from test_generation.test_runnable import TestRunnable
+from test_executor.abstract_test.abstract_test import AbstractTest
+from test_executor.test_generation.test_runnable import TestRunnable
 
 
 class TestLoader(object):
