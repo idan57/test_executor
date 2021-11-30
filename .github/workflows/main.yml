@@ -1,0 +1,9 @@
+on: push
+name: Python Checkout
+jobs:
+  Flake8:
+    runs-on: ubuntu-latest
+    name: Flake8 syntax check
+    steps:
+      - uses: actions/checkout@v2
+      - uses: cclauss/Find-Python-syntax-errors-action@master

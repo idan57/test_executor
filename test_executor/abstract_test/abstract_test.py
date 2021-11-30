@@ -54,13 +54,3 @@ class AbstractTest(ABC):
         Specific post_test logic that is not mandatory
         """
         pass
-
-    @staticmethod
-    def on_failed(result: TestResult, reason=""):
-        result.verdict = TestVerdict.FAILED
-        result.failure_reasons.append(reason)
-
-    @staticmethod
-    def on_aborted(result: TestResult, reason=""):
-        result.verdict = TestVerdict.ABORTED
-        result.failure_reasons.append(reason)
