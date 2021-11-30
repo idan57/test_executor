@@ -1,7 +1,9 @@
+import logging
 import os
 import threading
 from typing import List
 
+from test_executor.abstract_test.test_result import TestResult
 from test_executor.common import DEFAULT_LOGS_FOLDER
 from test_executor.logger_factory.logger_factory import LoggerFactory
 from test_executor.test_generation.test_runnable import TestRunnable
@@ -11,6 +13,11 @@ class TestExecutor(object):
     """
     Class that executes a list of runnables
     """
+    _logger: logging.Logger
+    _results: List[TestResult]
+    _concurrency_level: int
+    _logs_folder: str
+
     __test__ = False
 
     def __init__(self, logs_folder: str = DEFAULT_LOGS_FOLDER, concurrency_level: int = 1):
@@ -22,6 +29,10 @@ class TestExecutor(object):
         self._concurrency_level = concurrency_level
         self._results = []
         self._logger = LoggerFactory.generate_logger(os.path.join(self._logs_folder, "session.log"))
+
+    @property
+    def Logger(self) -> logging.Logger:
+        return self._logger
 
     def execute(self, test_runnables: List[TestRunnable]):
         """
