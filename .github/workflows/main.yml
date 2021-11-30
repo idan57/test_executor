@@ -1,8 +1,9 @@
-on: push
-name: Lint Python
+on: [push, pull_request]
+name: Python Checkout
 jobs:
   lint:
     runs-on: ubuntu-latest
+    name: Flake8 syntax check
     steps:
       - uses: actions/checkout@v2
       - uses: cclauss/Find-Python-syntax-errors-action@master
@@ -19,5 +20,4 @@ jobs:
         id: pytest
         uses: paolorechia/fast-pytest-github-action@develop
         with:
-          pytest_args: 'sample_py/test_success.py'
-          requirements_file: 'test_requirements.txt'
+          pytest_args: 'tests/'
