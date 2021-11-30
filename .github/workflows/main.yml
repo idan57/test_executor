@@ -1,8 +1,12 @@
 on: [push, pull_request]
-name: Lint Python
-jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: cclauss/Find-Python-syntax-errors-action@master
+- name: Lint Python
+  jobs:
+    lint:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - uses: cclauss/Find-Python-syntax-errors-action@master
+- name: Python Pylin GitHub Action
+  uses: fylein/python-pytest-github-action@v1
+  with:
+    args: pip3 install -r requirements.txt && pytest test/unit
