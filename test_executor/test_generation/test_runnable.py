@@ -1,11 +1,18 @@
 import os
+import traceback
 from typing import Callable
 
 from test_executor.abstract_test.abstract_test import AbstractTest
 from test_executor.abstract_test.test_result import TestResult, TestVerdict
 from test_executor.common import DEFAULT_LOGS_FOLDER
 from test_executor.logger_factory.logger_factory import LoggerFactory
-import traceback
+
+
+class ListenerNotSupported(Exception):
+    """
+    Exception that will be raised in case a listener is not supported
+    """
+    pass
 
 
 class TestRunnable(object):
@@ -40,10 +47,9 @@ class TestRunnable(object):
         :param logs_folder: path to set logs to
         :return: the test's result
         """
-        result = TestResult(test_number=self._test_number)
-        result.test_log = os.path.join(logs_folder, f"{self._test_number}_"
-                                                    f"{self.__class__.__name__}.{self._test_function.__name__}",
-                                       "test_log.log")
+        test_name = f"{self.__class__.__name__}.{self._test_function.__name__}"
+        result = TestResult(test_number=self._test_number, test_name=test_name)
+        result.test_log = os.path.join(logs_folder, f"{self._test_number}_{test_name}", "test_log.log")
 
         self._test_class.logger = LoggerFactory.generate_logger(result.test_log)
 
@@ -62,7 +68,9 @@ class TestRunnable(object):
             return result
 
         try:
+            self._test_class.pre_test()
             self._test_function()
+            self._test_class.post_test()
         except Exception as e:
             self.on_failed(result, reason=str(e))
             self._test_class.logger.error(f"Test Traceback:\n{traceback.format_exc()}")
@@ -73,20 +81,48 @@ class TestRunnable(object):
             self.on_failed(result, reason=str(e))
             self._test_class.logger.error(f"Cleanup Traceback:\n{traceback.format_exc()}")
 
+        self.on_pass(result)
         return result
 
     def on_pass(self, result: TestResult):
+        """
+        Executed on PASS status
+        :param result: result of the test
+        """
         self._notify_listeners(result)
 
     def on_failed(self, result: TestResult, reason=""):
+        """
+        Executed on FAIL status
+        :param result: result of the test
+        :param reason: reason of failure
+        """
         result.verdict = TestVerdict.FAILED
         result.failure_reasons.append(reason)
         self._notify_listeners(result)
 
-    def on_aborted(self, result: TestResult, reason=""):
+    def on_aborted(self, result: TestResult, reason: str = ""):
+        """
+        Executed on ABORTED status
+        :param result: result of the test
+        :param reason: reason of aborting
+        """
         result.verdict = TestVerdict.ABORTED
         result.failure_reasons.append(reason)
         self._notify_listeners(result)
+
+    def register_listener(self, listener):
+        """
+        Register a listener to the runnable
+
+        :param listener: a listener to register
+        """
+        if not hasattr(listener, "notify"):
+            err = f"The listener {listener} is not supported since it doesn't have a 'notify' method"
+            self._test_class.logger.error(err)
+            raise ListenerNotSupported(err)
+
+        self._result_listeners.append(listener)
 
     def _notify_listeners(self, result):
         for listener in self._result_listeners:
