@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: cclauss/Find-Python-syntax-errors-action@master
-  E2E Check:
+  E2E_Check:
     runs-on: ubuntu-latest
     name: E2E check
     steps:
