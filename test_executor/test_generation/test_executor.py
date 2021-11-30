@@ -34,13 +34,17 @@ class TestExecutor(object):
     def Logger(self) -> logging.Logger:
         return self._logger
 
-    def execute(self, test_runnables: List[TestRunnable]):
+    def execute(self, test_runnables: List[TestRunnable], listener=None) -> List[TestResult]:
         """
         Executes that list of given test runnables.
         If concurrency is not 1, we will execute the tests in batches by their order.
 
         :param test_runnables: list of runnables
+        :param listener: a listener that will be notified on all of the tests results
         """
+        if listener:
+            TestExecutor._register_listener_to_runnabled(test_runnables, listener)
+
         test_batches = self._get_test_batches(test_runnables)
 
         for batch in test_batches:
@@ -60,6 +64,8 @@ class TestExecutor(object):
                     else:
                         self._logger.info(f"The test '{test_runnable}' is still running")
 
+        return self._results
+
     def _run_single_runnable(self, test_runnable: TestRunnable):
         result = test_runnable.run(logs_folder=self._logs_folder)
         self._results.append(result)
@@ -69,3 +75,8 @@ class TestExecutor(object):
         for i in range(0, len(test_runnables), self._concurrency_level):
             test_batches.append(test_runnables[i:i + self._concurrency_level])
         return test_batches
+
+    @staticmethod
+    def _register_listener_to_runnabled(test_runnables: List[TestRunnable], listener):
+        for test in test_runnables:
+            test.register_listener(listener)

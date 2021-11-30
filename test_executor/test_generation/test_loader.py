@@ -1,6 +1,5 @@
 import inspect
 import pkgutil
-
 from typing import List
 
 from test_executor.abstract_test.abstract_test import AbstractTest
@@ -8,12 +7,31 @@ from test_executor.test_generation.test_runnable import TestRunnable
 
 
 class TestLoader(object):
+    """
+    This class loads tests from a given paths and generates runnables out of them
+    """
     __test__ = False
+    number_of_test = 0
 
     @staticmethod
-    def load_tests(tests_path: str, tests_filter: str = "test_") -> List[TestRunnable]:
+    def load_tests(tests_paths: List[str], tests_filter: str = "test_") -> List[TestRunnable]:
+        """
+        From a given list of paths to tests, a list of test runnables is returned
+
+        :param tests_paths: paths to tests
+        :param tests_filter: filter for choosing a test by its test function name
+        :return: list of test runnables
+        """
         tests = []
-        number_of_test = 0
+        for tests_path in tests_paths:
+            tests += TestLoader._load_tests(tests_path, tests_filter)
+
+        return tests
+
+    @staticmethod
+    def _load_tests(tests_path: str, tests_filter: str):
+        tests = []
+
         for loader, sub_module, is_pkg in pkgutil.walk_packages([tests_path]):
             loaded = loader.find_module(sub_module).load_module(sub_module)
             cls_members = inspect.getmembers(loaded, inspect.isclass)
@@ -28,8 +46,8 @@ class TestLoader(object):
                         class_instance = cls_mem[1]()
                         runnable = TestRunnable(test_function=getattr(class_instance, function_name),
                                                 test_class=class_instance,
-                                                test_number=number_of_test)
+                                                test_number=TestLoader.number_of_test)
                         tests.append(runnable)
-                        number_of_test += 1
+                        TestLoader.number_of_test += 1
 
         return tests

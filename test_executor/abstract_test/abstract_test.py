@@ -1,10 +1,9 @@
 import logging
 from abc import ABC, abstractmethod
 from inspect import getmembers, ismethod
-
 from typing import List
 
-from test_executor.abstract_test.test_result import TestResult, TestVerdict
+from test_executor.abstract_test.test_result import TestResult
 from test_executor.common import DEFAULT_LOGS_FOLDER
 
 
