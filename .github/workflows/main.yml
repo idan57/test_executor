@@ -10,4 +10,6 @@ jobs:
   E2E Check:
     runs-on: ubuntu-latest
     name: E2E check
-    run: python3 ./test_executor/tests/test_e2e.py
+    steps:
+      - name: Run
+        run: python3 ./test_executor/tests/test_e2e.py
