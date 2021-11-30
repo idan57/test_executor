@@ -21,7 +21,6 @@ class AbstractTest(ABC):
     abstract_test_methods = None
 
     def __init__(self):
-        self.test_result = TestResult()
         self.logger = None
         self._logs_folder = DEFAULT_LOGS_FOLDER
         self.test_results = []
