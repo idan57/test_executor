@@ -9,4 +9,10 @@ def test_e2e_testing():
     tests = TestLoader.load_tests(tests_path)
     executor = TestExecutor()
 
+    executor.Logger.info("*"*16 + " Start Execution " + "*"*16)
     executor.execute(tests)
+    executor.Logger.info("*"*16 + " End Execution " + "*"*16)
+
+
+if __name__ == '__main__':
+    test_e2e_testing()

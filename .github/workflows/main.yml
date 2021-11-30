@@ -7,3 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: cclauss/Find-Python-syntax-errors-action@master
+  E2E Check:
+    runs-on: ubuntu-latest
+    name: E2E check
+    run: python3 ./test_executor/tests/test_e2e.py
