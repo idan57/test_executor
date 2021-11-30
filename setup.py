@@ -9,7 +9,7 @@ except Exception:
 
 setuptools.setup(
     name="test_executor",
-    version="0.0.6",
+    version="0.0.7",
     author="Idan Cohen",
     include_package_data=True,
     author_email="idan57@gmail.com",
