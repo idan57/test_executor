@@ -12,6 +12,6 @@ jobs:
     name: E2E check
     steps:
       - name: Check Folder
-        run: ll
+        run: ls
       - name: Run
         run: python3 ./test_executor/tests/test_e2e.py
