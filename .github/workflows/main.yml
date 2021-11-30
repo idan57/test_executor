@@ -1,11 +1,23 @@
-on: [push, pull_request]
-name: Python Check - Syntax & PyTest
-  jobs:
+on: push
+name: Lint Python
+jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: cclauss/Find-Python-syntax-errors-action@master
-      - uses: fylein/python-pytest-github-action@v1
-        with:
-          args: pip3 install -r requirements.txt && pytest test/unit
+  pytest:
+    runs-on: ubuntu-latest
+    name: Pytest passing tests
+      steps:
+        - uses: actions/setup-python@v2
+          with:
+            python-version: '3.8'
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Pytest Action Step
+          id: pytest
+          uses: paolorechia/fast-pytest-github-action@develop
+          with:
+            pytest_args: 'sample_py/test_success.py'
+            requirements_file: 'test_requirements.txt'
