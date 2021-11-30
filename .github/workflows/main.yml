@@ -1,17 +1,9 @@
 on: push
 name: Python Checkout
 jobs:
-  lint:
+  Flake8:
     runs-on: ubuntu-latest
     name: Flake8 syntax check
     steps:
       - uses: actions/checkout@v2
       - uses: cclauss/Find-Python-syntax-errors-action@master
-  pytest:
-    runs-on: ubuntu-latest
-    name: Pytest passing tests
-    steps:
-      - name: Python Pylin GitHub Action
-        uses: fylein/python-pytest-github-action@v1
-        with:
-          args: pip3 install -r requirements.txt && pytest tests/
