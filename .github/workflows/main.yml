@@ -11,7 +11,11 @@ jobs:
     runs-on: ubuntu-latest
     name: E2E check
     steps:
-      - name: Check Folder
-        run: ls
-      - name: Run
-        run: python3 ./test_executor/tests/test_e2e.py
+      - name: checkout repo content
+        uses: actions/checkout@v2 # checkout the repository content to github runner.
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8 # install the python needed
+      - name: execute py script # run the test_e2e.py to get the latest data
+        run: python test_executor/tests/test_e2e.py
