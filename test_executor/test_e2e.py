@@ -2,7 +2,6 @@ import os
 
 
 if __name__ == '__main__':
-
     from test_generation.test_executor import TestExecutor
 
     from test_generation.test_loader import TestLoader
