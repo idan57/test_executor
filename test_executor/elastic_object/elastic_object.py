@@ -2,7 +2,7 @@ class ElasticObject(dict):
     """
     This class allows you to create objects with custom members on the fly
     """
-    
+
     def __getattr__(self, item):
         try:
             # Throws exception if not in prototype chain

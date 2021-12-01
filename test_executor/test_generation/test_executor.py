@@ -3,7 +3,7 @@ import os
 import threading
 from typing import List, Dict
 
-from abstract_test.abstract_test import AbstractTest
+from test_executor.abstract_test.abstract_test import AbstractTest
 from test_executor.abstract_test.test_result import TestResult
 from test_executor.common import DEFAULT_LOGS_FOLDER
 from test_executor.logger_factory.logger_factory import LoggerFactory
