@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from inspect import getmembers, ismethod
 from typing import List
 
-from elastic_object.elastic_object import ElasticObject
+from test_executor.elastic_object.elastic_object import ElasticObject
 from test_executor.abstract_test.test_result import TestResult
 from test_executor.common import DEFAULT_LOGS_FOLDER
 
