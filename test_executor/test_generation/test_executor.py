@@ -1,8 +1,9 @@
 import logging
 import os
 import threading
-from typing import List
+from typing import List, Dict
 
+from test_executor.abstract_test.abstract_test import AbstractTest
 from test_executor.abstract_test.test_result import TestResult
 from test_executor.common import DEFAULT_LOGS_FOLDER
 from test_executor.logger_factory.logger_factory import LoggerFactory
@@ -34,16 +35,21 @@ class TestExecutor(object):
     def Logger(self) -> logging.Logger:
         return self._logger
 
-    def execute(self, test_runnables: List[TestRunnable], listener=None) -> List[TestResult]:
+    def execute(self, test_runnables: List[TestRunnable], listener=None,
+                custom_params: Dict[str, Dict[str, str]] = None) -> List[TestResult]:
         """
         Executes that list of given test runnables.
         If concurrency is not 1, we will execute the tests in batches by their order.
 
         :param test_runnables: list of runnables
         :param listener: a listener that will be notified on all of the tests results
+        :param custom_params: custom parameters for the tests
         """
         if listener:
             TestExecutor._register_listener_to_runnabled(test_runnables, listener)
+
+        if custom_params:
+            TestExecutor._set_test_params(test_runnables, custom_params)
 
         test_batches = self._get_test_batches(test_runnables)
 
@@ -80,3 +86,19 @@ class TestExecutor(object):
     def _register_listener_to_runnabled(test_runnables: List[TestRunnable], listener):
         for test in test_runnables:
             test.register_listener(listener)
+
+    @classmethod
+    def _set_test_params(cls, test_runnables, custom_params):
+        for test_runnable in test_runnables:
+            test_class_name = test_runnable._test_class.__class__.__name__
+            test_name = str(test_runnable)
+            if test_name in custom_params:
+                cls._set_params(test_runnable._test_class, custom_params[test_name])
+
+            if test_class_name in custom_params:
+                cls._set_params(test_runnable._test_class, custom_params[test_class_name])
+
+    @classmethod
+    def _set_params(cls, test_class: AbstractTest, params: dict):
+        for param_name, param_val in params.items():
+            test_class.params[param_name] = param_val
