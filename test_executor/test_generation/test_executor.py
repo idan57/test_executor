@@ -78,8 +78,9 @@ class TestExecutor(object):
 
     def _get_test_batches(self, test_runnables):
         test_batches = []
+        num_of_runnables = len(test_runnables)
         for i in range(0, len(test_runnables), self._concurrency_level):
-            test_batches.append(test_runnables[i:i + self._concurrency_level])
+            test_batches.append(test_runnables[i:min(num_of_runnables, i + self._concurrency_level)])
         return test_batches
 
     @staticmethod
