@@ -25,3 +25,7 @@ class TestResult(object):
         self.failure_reasons = []
         self.test_log = ""
         self.test_number = test_number
+
+    def __repr__(self):
+        return f"Test Name: {self.test_name} - Verdict: {self.verdict} - " \
+               f"Failures: {', '.join(self.failure_reasons) if self.failure_reasons else 'None'}"

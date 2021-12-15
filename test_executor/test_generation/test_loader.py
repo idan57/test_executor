@@ -11,10 +11,11 @@ class TestLoader(object):
     This class loads tests from a given paths and generates runnables out of them
     """
     __test__ = False
-    number_of_test = 0
 
-    @staticmethod
-    def load_tests(tests_paths: List[str], tests_filter: str = "test_") -> List[TestRunnable]:
+    def __init__(self):
+        self.number_of_test = 0
+
+    def load_tests(self, tests_paths: List[str], tests_filter: str = "test_") -> List[TestRunnable]:
         """
         From a given list of paths to tests, a list of test runnables is returned
 
@@ -24,12 +25,11 @@ class TestLoader(object):
         """
         tests = []
         for tests_path in tests_paths:
-            tests += TestLoader._load_tests(tests_path, tests_filter)
+            tests += self._load_tests(tests_path, tests_filter)
 
         return tests
 
-    @staticmethod
-    def _load_tests(tests_path: str, tests_filter: str):
+    def _load_tests(self, tests_path: str, tests_filter: str):
         tests = []
 
         for loader, sub_module, is_pkg in pkgutil.walk_packages([tests_path]):
@@ -46,8 +46,8 @@ class TestLoader(object):
                         class_instance = cls_mem[1]()
                         runnable = TestRunnable(test_function=getattr(class_instance, function_name),
                                                 test_class=class_instance,
-                                                test_number=TestLoader.number_of_test)
+                                                test_number=self.number_of_test)
                         tests.append(runnable)
-                        TestLoader.number_of_test += 1
+                        self.number_of_test += 1
 
         return tests
