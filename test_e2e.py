@@ -31,7 +31,7 @@ def execute(test_paths: List[str], concurrency: int = 1, listener=None, set_para
     :param set_params: True if should set params in execution
     :return: results of the tests
     """
-    loaded_tests = TestLoader.load_tests(test_paths)
+    loaded_tests = TestLoader().load_tests(test_paths)
 
     params = {}
 

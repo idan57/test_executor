@@ -12,10 +12,16 @@ class LoggingConfig(object):
 
 
 class LoggerFactory(object):
-    @staticmethod
-    def generate_logger(log_path, config: LoggingConfig = LoggingConfig()) -> logging.Logger:
+    LOGGERS = {}
+
+    @classmethod
+    def generate_logger(cls, log_path, config: LoggingConfig = LoggingConfig()) -> logging.Logger:
+        if log_path in cls.LOGGERS:
+            return cls.LOGGERS[log_path]
+
         LoggerFactory._set_up_log_folder(log_path)
         logger = logging.getLogger(log_path)
+        cls.LOGGERS[log_path] = logger
         logger.setLevel(logging.DEBUG)
 
         fh = logging.FileHandler(log_path)

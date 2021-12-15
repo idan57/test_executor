@@ -1,5 +1,6 @@
 import logging
 import os
+import pprint
 import threading
 from typing import List, Dict
 
@@ -46,7 +47,7 @@ class TestExecutor(object):
         :param custom_params: custom parameters for the tests
         """
         if listener:
-            TestExecutor._register_listener_to_runnabled(test_runnables, listener)
+            TestExecutor._register_listener_to_runnables(test_runnables, listener)
 
         if custom_params:
             TestExecutor._set_test_params(test_runnables, custom_params)
@@ -70,6 +71,13 @@ class TestExecutor(object):
                     else:
                         self._logger.info(f"The test '{test_runnable}' is still running")
 
+        summary = pprint.pformat(self._results, indent=4, width=120).replace("[", "").replace("]", "").splitlines()
+        final_summary = []
+        for result in summary:
+            result = result.rsplit(",", 1)[0].strip()
+            final_summary.append(result)
+        final_summary = "\n".join(final_summary)
+        self._logger.info(f"Execution Summary:\n{final_summary}")
         return self._results
 
     def _run_single_runnable(self, test_runnable: TestRunnable):
@@ -84,7 +92,7 @@ class TestExecutor(object):
         return test_batches
 
     @staticmethod
-    def _register_listener_to_runnabled(test_runnables: List[TestRunnable], listener):
+    def _register_listener_to_runnables(test_runnables: List[TestRunnable], listener):
         for test in test_runnables:
             test.register_listener(listener)
 
